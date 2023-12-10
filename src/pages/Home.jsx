@@ -5,18 +5,28 @@ import AddNote from '../components/AddNote';
 import NoteItem from '../components/NoteItem';
 
 export default function Home() {
-  const { notes, editNote } = useContext(NotesContext);
+  const { notes, editNote, filterNotes } = useContext(NotesContext);
   const { theme } = useContext(ThemeContext);
   const [note, setNote] = useState({ id: "", title: "", body: "" });
+  const [filteredNotes, setFilteredNotes] = useState([]);
   const ref = useRef();
 
   const updateNote = (noteItem) => {
-    setNote({id: noteItem.id, title: noteItem.title, body: noteItem.body})
+    setNote({ id: noteItem.id, title: noteItem.title, body: noteItem.body })
     ref.current.click();
   }
 
   const handleChange = (e) => {
     setNote({ ...note, [e.target.id]: e.target.value });
+  }
+
+  const handleSearch = (e) => {
+    const res = filterNotes(e.target.value);
+    if (res.length != 0) {
+      setFilteredNotes(res);
+    } else {
+      setFilteredNotes(notes);
+    }
   }
 
   const handleSubmit = () => {
@@ -29,10 +39,22 @@ export default function Home() {
     <div className="container my-3">
       <AddNote />
 
-      <hr className="my-3" />
+      <hr className={`my-3 ${theme === 'dark' && 'bg-white'}`} />
 
       <h2 className={theme === 'light' ? 'text-dark' : 'text-white'}>Your Notes</h2>
-      {notes.length != 0 && <div className='row px-0'>
+
+      <form className="d-flex my-2 my-lg-0">
+        <input className="form-control mr-sm-2" type="search" placeholder="Filter notes..." aria-label="Search" onChange={handleSearch} />
+        {/* <button className="btn btn-primary my-2 my-sm-0" type="submit">Search</button> */}
+      </form>
+      <hr className={`my-3 ${theme === 'dark' && 'bg-white'}`} />
+
+      {filteredNotes.length != 0 && notes.length != 0 && <div className='row px-0'>
+        {filteredNotes.map((note) => {
+          return <NoteItem key={note.id} note={note} updateNote={updateNote} />
+        })}
+      </div>}
+      {filteredNotes.length === 0 && notes.length != 0 && <div className='row px-0'>
         {notes.map((note) => {
           return <NoteItem key={note.id} note={note} updateNote={updateNote} />
         })}

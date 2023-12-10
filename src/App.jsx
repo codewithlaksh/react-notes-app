@@ -25,7 +25,7 @@ function App() {
     <ThemeState>
       <NotesState>
         <Router>
-          <Header title={"iNotebook"} search={true} getTheme={getTheme} />
+          <Header title={"iNotebook"} search={false} getTheme={getTheme} />
           <Routes>
             <Route path="/" element={<Home />} />
           </Routes>

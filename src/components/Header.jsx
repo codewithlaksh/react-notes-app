@@ -31,13 +31,15 @@ function Header(props) {
                         <a className="nav-link" href="#">Contact Us</a>
                     </li>
                 </ul>
-                {search && <form className="form-inline my-2 my-lg-0">
-                    <input className="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" />
-                    <button className="btn btn-primary my-2 my-sm-0" type="submit">Search</button>
-                </form>}
-                <button data-theme={theme === "light" ? "dark" : "light"} className='btn btn-primary ml-3' onClick={handleChangeTheme}>
-                    {theme === 'light' ? <BiSolidMoon /> : <BiSolidSun />}
-                </button>
+                <div>
+                    {search && <form className="form-inline my-2 my-lg-0">
+                        <input className="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" />
+                        <button className="btn btn-primary my-2 my-sm-0" type="submit">Search</button>
+                    </form>}
+                    <button data-theme={theme === "light" ? "dark" : "light"} className='btn btn-primary ml-2' onClick={handleChangeTheme}>
+                        {theme === 'light' ? <BiSolidMoon /> : <BiSolidSun />}
+                    </button>
+                </div>
             </div>
         </nav>
     )

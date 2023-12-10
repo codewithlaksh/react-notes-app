@@ -4,6 +4,7 @@ import { v4 } from "uuid";
 
 const NotesState = ({ children }) => {
     const [notes, setNotes] = useState([]);
+    const [filteredNotes, setFilteredNotes] = useState([]);
 
     useEffect(() => {
         getNotes();
@@ -75,8 +76,22 @@ const NotesState = ({ children }) => {
         getNotes();
     }
 
+    const filterNotes = (searchVal) => {
+        const u = localStorage.getItem('inotebook-cwl');
+        
+        if (u) {
+            const parsed = JSON.parse(u);
+            const filtered = parsed['notes'].filter(e => {
+                return e.title.toLowerCase().includes(searchVal.toLowerCase())
+            })
+            setFilteredNotes(filtered);
+
+            return filteredNotes;
+        }
+    }
+
     return (
-        <NotesContext.Provider value={{ notes, addNote, editNote, deleteNote }}>
+        <NotesContext.Provider value={{ notes, addNote, editNote, deleteNote, filterNotes }}>
             {children}
         </NotesContext.Provider>
     )
